@@ -1,17 +1,86 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Estudiantes
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-grid>
 
+    <ion-row>
+        <ion-col size="4">
+            <ion-item>
+                <ion-label position="floating">Numero de Control</ion-label>
+                <ion-input type="text"></ion-input>
+            </ion-item>
+        </ion-col><!--Numero de Control-->
+
+        <ion-col size="4">
+            <ion-item>
+              <ion-label position="floating">Nombre</ion-label>
+              <ion-input type="text"></ion-input>
+          </ion-item>
+        </ion-col><!--Nombre-->
+
+        <ion-col size="4">
+          <ion-item>
+            <ion-label position="floating">Curp</ion-label>
+            <ion-input type="text"></ion-input>
+          </ion-item>
+        </ion-col><!--Curp-->
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="2">
+          <ion-item>
+              <ion-label position="floating">Edad</ion-label>
+              <ion-input type="text"></ion-input>
+          </ion-item>
+      </ion-col><!--Edad-->
+  
+      <ion-col size="2">
+          <ion-item>
+            <ion-label position="floating">NIP</ion-label>
+            <ion-input type="text"></ion-input>
+        </ion-item>
+      </ion-col><!--NIP-->
+  
+      <ion-col size="4">
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+      </ion-col><!--Email-->
+      
+      <ion-col size="4">
+          <ion-item>
+            <ion-label position="floating">Carrera</ion-label>
+            <ion-input type="text"></ion-input>
+          </ion-item>
+        </ion-col><!--Carrera-->
+    </ion-row>
+
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-list>
+          <ion-item *ngFor="let s of students">
+            
+            <h3>{{s.controlNumber}} </h3>
+            <h3>{{s.name}}</h3>
+            <h3>{{s.curp}}</h3>
+            <h3>{{s.age}}</h3>
+            <h3>{{s.nip}}</h3>
+            <h3>{{s.email}}</h3>
+            <h3>{{s.career}}</h3>
+            
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    
+  </ion-grid>
   <app-explore-container name="Tab 1 page"></app-explore-container>
 </ion-content>
