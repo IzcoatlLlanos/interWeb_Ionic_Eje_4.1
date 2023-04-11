@@ -10,56 +10,18 @@
   <ion-grid>
 
     <ion-row>
-        <ion-col size="4">
+        <ion-col size="8">
             <ion-item>
                 <ion-label position="floating">Numero de Control</ion-label>
                 <ion-input type="text"></ion-input>
             </ion-item>
         </ion-col><!--Numero de Control-->
-
         <ion-col size="4">
-            <ion-item>
-              <ion-label position="floating">Nombre</ion-label>
-              <ion-input type="text"></ion-input>
-          </ion-item>
-        </ion-col><!--Nombre-->
-
-        <ion-col size="4">
-          <ion-item>
-            <ion-label position="floating">Curp</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-        </ion-col><!--Curp-->
-    </ion-row>
-
-    <ion-row>
-      <ion-col size="2">
-          <ion-item>
-              <ion-label position="floating">Edad</ion-label>
-              <ion-input type="text"></ion-input>
-          </ion-item>
-      </ion-col><!--Edad-->
-  
-      <ion-col size="2">
-          <ion-item>
-            <ion-label position="floating">NIP</ion-label>
-            <ion-input type="text"></ion-input>
-        </ion-item>
-      </ion-col><!--NIP-->
-  
-      <ion-col size="4">
-        <ion-item>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-      </ion-col><!--Email-->
-      
-      <ion-col size="4">
-          <ion-item>
-            <ion-label position="floating">Carrera</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-        </ion-col><!--Carrera-->
+          <ion-button color="success" expand="block" shape="round">
+            <ion-icon name="checkmark"></ion-icon>
+            <ion-label>Aceptar</ion-label>
+          </ion-button>
+        </ion-col>
     </ion-row>
 
 
@@ -67,20 +29,19 @@
       <ion-col size="12">
         <ion-list>
           <ion-item *ngFor="let s of students">
-            
-            <h3>{{s.controlNumber}} </h3>
-            <h3>{{s.name}}</h3>
-            <h3>{{s.curp}}</h3>
-            <h3>{{s.age}}</h3>
-            <h3>{{s.nip}}</h3>
-            <h3>{{s.email}}</h3>
-            <h3>{{s.career}}</h3>
-            
+            <div class="divContenido">
+              <p>{{s.controlNumber}}</p>
+              <p>{{s.name}}</p>
+              <p>{{s.curp}}</p>
+              <p>{{s.age}}</p>
+              <p>{{s.nip}}</p>
+              <p>{{s.email}}</p>
+              <p>{{s.career}}</p>
+            </div>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
     
   </ion-grid>
-  <app-explore-container name="Tab 1 page"></app-explore-container>
 </ion-content>
