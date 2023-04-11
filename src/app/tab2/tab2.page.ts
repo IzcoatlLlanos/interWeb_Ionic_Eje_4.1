@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';//Import para trabajar con forms
 import { Student } from '../models/student';
 import { StudentService } from '../services/student.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab2',
@@ -14,9 +15,12 @@ export class Tab2Page {
   public myForm: FormGroup; 
   public validationMessages;
 
-  constructor(private studentService: StudentService, private fb: FormBuilder){ /**Siempre se */
+  public students: Student[];
+
+  constructor(private studentService: StudentService, private fb: FormBuilder,private toastController: ToastController){ /**Siempre se */
+  this.students = this.studentService.getStudentList();
     this.myForm = this.fb.group({
-      cn: ["",Validators.compose([Validators.minLength(8), //Compose sirve para meter varias validaciones a un input, recibe un arreglo
+      controlNumber: ["",Validators.compose([Validators.minLength(8), //Compose sirve para meter varias validaciones a un input, recibe un arreglo
         Validators.pattern('^[0-9]+$')])], // pattern recibe una expresion regular
       name: ["",Validators.required],
       curp: ["",Validators.compose([Validators.required, //Compose sirve para meter varias validaciones a un input, recibe un arreglo
@@ -40,33 +44,54 @@ export class Tab2Page {
     }
 
     this.validationMessages = {
-      'cn':[
+      'controlNumber':[
         {type: 'required', message: "El numero de control es obligatorio"},
         {type: 'minlength', message: "El numero de control esta incompleto"},
         {type: 'pattern', message: "El numero de control no es valido"},
       ],
       'name':[
-        {type: 'required', message: "El numero de control es obligatorio"},
-        {type: 'minlength', message: "El numero de control esta incompleto"},
-        {type: 'pattern', message: "El numero de control no es valido"},
+        {type: 'required', message: "El nombre es obligatorio"},
+      ],
+      'curp':[
+        {type: 'required', message: "La curp es obligatoria"},
+        {type: 'pattern', message: "La curp no es valida"},
+      ],
+      'age':[
+        {type: 'required', message: "La edad obligatoria"},
+        {type: 'min', message: "La edad no es valida"},
+      ],
+      'nip':[
+        {type: 'required', message: "El nip es obligatorio"},
+        {type: 'min', message: "El nip debe tener al menos dos digitos"},
+      ],
+      'email':[
+        {type: 'required', message: "El correo electronico es obligatorio"},
+        {type: 'email', message: "El formato no es correcto para email"},
+      ],
+      'career':[
+        {type: 'required', message: "La carrera es obligatoria"},
       ]
     }
   }
 
   ngOnInit(){}
 
-  public newStudent() {
-    this.student = {
-      name:this.myForm.controls['name'].value,
-      controlNumber:this.myForm.controls['cn'].value,
-      age:this.myForm.controls['age'].value,
-      nip:this.myForm.controls['nip'].value,
-      email:this.myForm.controls['email'].value,
-      career:this.myForm.controls['career'].value,
-      curp:this.myForm.controls['curp'].value,
-      photo:this.myForm.controls['photo'].value
-    }
-    this.studentService.newStudent(this.student);
+  public newStudent() {  
+    this.studentService.newStudent(this.myForm.getRawValue());
+    this.presentToast('Estudiante añadido','success');
+  }
+
+  private async presentToast(
+    message: string,
+    color: 'success' | 'danger' | 'warning'
+  ) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 500,
+      color,
+    });
+    toast.present();
   }
 
 }
+//LAGH991023HNTLDC99

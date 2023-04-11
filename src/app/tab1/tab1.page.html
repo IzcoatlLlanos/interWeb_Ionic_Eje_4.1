@@ -11,10 +11,9 @@
 
     <ion-row>
         <ion-col size="8">
-            <ion-item>
-                <ion-label position="floating">Numero de Control</ion-label>
-                <ion-input type="text"></ion-input>
-            </ion-item>
+          <ion-searchbar placeholder="Buscar por numero de control" (ionChange)="filterStudent($event)" #ionBusqueda>
+
+          </ion-searchbar>
         </ion-col><!--Numero de Control-->
         <ion-col size="4">
           <ion-button color="success" expand="block" shape="round">
@@ -28,17 +27,44 @@
     <ion-row>
       <ion-col size="12">
         <ion-list>
-          <ion-item *ngFor="let s of students">
-            <div class="divContenido">
-              <p>{{s.controlNumber}}</p>
-              <p>{{s.name}}</p>
-              <p>{{s.curp}}</p>
-              <p>{{s.age}}</p>
-              <p>{{s.nip}}</p>
-              <p>{{s.email}}</p>
-              <p>{{s.career}}</p>
-            </div>
-          </ion-item>
+          <ion-item-sliding *ngFor="let s of fStudents; let i = index;">
+            <ion-item>
+              <div class="divContenido">
+                <ion-col size="1">
+                  <ion-avatar>
+                    <img src="{{s.photo}}" />
+                  </ion-avatar>
+                </ion-col>
+                <p class="pContenidoHijo">{{s.controlNumber}}</p>
+                <p class="pContenidoHijo">{{s.name}}</p>
+                <p class="pContenidoHijo">{{s.curp}}</p>
+                <p class="pContenidoHijo">{{s.age}}</p>
+                <p class="pContenidoHijo">{{s.nip}}</p>
+                <p class="pContenidoHijo">{{s.email}}</p>
+                <p class="pContenidoHijo">{{s.career}}</p>
+              </div>
+            </ion-item>
+
+            <ion-item-options
+              side="start"
+              (click)="deleteStudent(s);"
+              expandable
+            >
+              <ion-item-option color="primary">
+                <ion-icon slot="start" name="create-outline"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+            <ion-item-options
+              side="end"
+              
+              expandable
+            >
+              <ion-item-option color="danger" expandable (click)="deleteStudent(s);">
+                <ion-icon slot="start" name="trash"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+
+          </ion-item-sliding>
         </ion-list>
       </ion-col>
     </ion-row>

@@ -6,12 +6,12 @@ import { Student } from '../models/student'
 })
 export class StudentService {
   
-  private students: Student[];
+  private students: Student[] = [];
 
   
 
   constructor() {
-    this.students = [{
+    this.students.push({
       controlNumber: '18401145',
       name: 'Hector Izcoatl Llanos Godoy',
       curp: 'LAGH991023HNTLDC09',
@@ -19,7 +19,7 @@ export class StudentService {
       nip: 3006,
       email: 'heizllanosgo@ittepic.edu.mx',
       career: 'ISC',
-      photo: 'https://fastly.picsum.photos/id/859/600/600.jpg?hmac=xepFxeogyk6l3g9L3iqsATVWaE-JapYVrIxjsFkiN6s'
+      photo: 'https://picsum.photos/200'
     },{
       controlNumber: '18401189',
       name: 'Jaime Robles Zepeda',
@@ -28,33 +28,13 @@ export class StudentService {
       nip: 3006,
       email: 'heizllanosgo@ittepic.edu.mx',
       career: 'ISC',
-      photo: 'https://fastly.picsum.photos/id/859/600/600.jpg?hmac=xepFxeogyk6l3g9L3iqsATVWaE-JapYVrIxjsFkiN6s'
-    }];
+      photo: 'https://picsum.photos/200'
+    });
    }
 
    public getStudentList(): Student[]{
     return this.students;
    }
-
-   public getStudentByControlNumberForEach(cn: string): Student {
-    let student: Student = 
-    {
-      controlNumber: '',
-      name: '',
-      curp: '',
-      age: 0,
-      nip: 0,
-      email: '',
-      career: '',
-    }
-    this.students.forEach(element => {
-      if(element.controlNumber == cn) {
-        student = element;
-      }
-    });
-    
-    return student;
-   }//getStudentByControlNumber
 
    public getStudentByControlNumberFilter(cn: string): Student|undefined {
     return this.students.find( elem => {
@@ -64,15 +44,22 @@ export class StudentService {
 
    public newStudent(student: Student): Student[] {
     this.students.push(student);
+    alert(student.controlNumber+''+student.name+student.age+''+student.curp+student.nip+''+student.career);
     return this.students;
    }//newStudent
 
-   public deleteStudent(pos: number): Student[] {
-    this.students.splice(pos);
+   public deleteStudent(student: Student): Student[] {
+    const pos = this.students.findIndex(
+      (_student) => _student.controlNumber == student.controlNumber
+    );
+    this.students.splice(pos,1);
     return this.students;
    }//deleteStudent
 
-   public updateStudent(pos: number, student: Student): Student[] {
+   public updateStudent(student: Student): Student[] {
+    const pos = this.students.findIndex(
+      (_student) => _student.controlNumber == student.controlNumber
+    );
     this.students[pos] = student;
     return this.students;
    }//updateStudent
