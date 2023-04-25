@@ -1,139 +1,155 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Nuevo Estudiante
+      Productos
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-<form [formGroup]="myForm">
-  <ion-grid>
-    <!--Numero de control-->
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">Numero de Control</ion-label>
-          <ion-input formControlName="controlNumber" ></ion-input>
-        </ion-item>
-        <ng-container *ngFor="let val of validationMessages['controlNumber']">
-          <div class="error-message" *ngIf="myForm.get('controlNumber')?.hasError(val.type)&&myForm.get('controlNumber')?.touched">
-            {{val.message}}
-          </div>
-        </ng-container>
-      </ion-col>
-    </ion-row>
-    <!--Nombre-->
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">Nombre</ion-label>
-          <ion-input formControlName="name"></ion-input>
-        </ion-item>
-        <ng-container *ngFor="let val of validationMessages['name']">
-          <div class="error-message" *ngIf="myForm.get('name')?.hasError(val.type)&&myForm.get('name')?.touched">
-            {{val.message}}
-          </div>
-        </ng-container>
-      </ion-col>
-    </ion-row>
-    <!--Curp-->
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">Curp</ion-label>
-          <ion-input formControlName="curp"></ion-input>
-        </ion-item>
-        <ng-container *ngFor="let val of validationMessages['curp']">
-          <div class="error-message" *ngIf="myForm.get('curp')?.hasError(val.type)&&myForm.get('curp')?.touched">
-            {{val.message}}
-          </div>
-        </ng-container>
-      </ion-col>
-    </ion-row>
-    <!--Edad-->
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">Edad</ion-label>
-          <ion-input type="number" formControlName="age"></ion-input>
-        </ion-item>
-        <ng-container *ngFor="let val of validationMessages['age']">
-          <div class="error-message" *ngIf="myForm.get('age')?.hasError(val.type)&&myForm.get('age')?.touched">
-            {{val.message}}
-          </div>
-        </ng-container>
-      </ion-col>
-    </ion-row>
-    <!--Nip-->
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">NIP</ion-label>
-          <ion-input type="number" formControlName="nip"></ion-input>
-        </ion-item>
-        <ng-container *ngFor="let val of validationMessages['nip']">
-          <div class="error-message" *ngIf="myForm.get('nip')?.hasError(val.type)&&myForm.get('nip')?.touched">
-            {{val.message}}
-          </div>
-        </ng-container>
-      </ion-col>
-    </ion-row>
-    <!--Email-->
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input formControlName="email"></ion-input>
-        </ion-item>
-        <ng-container *ngFor="let val of validationMessages['email']">
-          <div class="error-message" *ngIf="myForm.get('email')?.hasError(val.type)&&myForm.get('email')?.touched">
-            {{val.message}}
-          </div>
-        </ng-container>
-      </ion-col>
-    </ion-row>
-    <!--Carrera-->
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">Carrera</ion-label>
-          <ion-select placeholder="Carreras" interface="popover" formControlName="career" value="">
-            <ion-select-option>ISC</ion-select-option>
-            <ion-select-option>II</ion-select-option>
-            <ion-select-option>IGE</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <ng-container *ngFor="let val of validationMessages['career']">
-          <div class="error-message" *ngIf="myForm.get('career')?.hasError(val.type)&&myForm.get('career')?.touched">
-            {{val.message}}
-          </div>
-        </ng-container>
-      </ion-col>
-    </ion-row>
-    <!--Foto-->
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">Foto</ion-label>
-          <ion-input formControlName="photo" (keydown.enter)="newStudent()"></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-button 
-          color="success" 
-          expand="block" 
-          shape="round" 
-          (click)="newStudent()"> <!-- [disabled]="!myForm.valid" -->
-          <ion-icon name="checkmark"></ion-icon>&nbsp;
-          <div>Guardar</div>
-        </ion-button>
-      </ion-col>
-    </ion-row>
+<ion-grid fixed>
+  <ion-row>
+    <ion-col size="8">
+      <ion-searchbar placeholder="Buscar por:" (ionChange)="filterProduct($event)" #ionBusqueda></ion-searchbar>
+    </ion-col>
+    <!--<ion-col size="4">
+      <ion-select value="sku" interface="popover" placeholder="Filtrar por:">
+        <ion-select-option value="sku">Nombre</ion-select-option>
+        <ion-select-option value="name">Nombre</ion-select-option>
+        <ion-select-option value="category">Categoria</ion-select-option>
+      </ion-select>
+    </ion-col>-->
+  </ion-row>
 
-
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="4" *ngFor="let prod of fProductos">
+        <ion-card (click)="setActiveProd(prod)">
+          <img alt="{{prod.name}}" src="{{prod.photo}}" width="420" height="420"/>
+          <ion-card-header>
+            <ion-card-title>{{prod.name}}</ion-card-title>
+            <ion-card-subtitle color="success">${{prod.price}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col size="12">
+                  <p>{{prod.description}}</p>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="8">
+                  <ion-rating-stars
+                    (click)="setModalUnoOpen(true)"
+                    [rating]="prod.promCal"
+                    [color]="'darkgrey'"
+                    [filledColor]="'orange'"
+                    [margin]="2"
+                    [size]="25"
+                    [disabled]="true"
+                  ></ion-rating-stars>
+                </ion-col>
+                <ion-col size="4">
+                  <h2>{{prod.calification.length}} <ion-button fill="clear" size="small" (click)="setModalDosOpen(true)"><ion-icon name="chevron-down-outline"></ion-icon></ion-button></h2>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col size="8">
+                  <ion-chip [color]="getColor(prod.category.idCategoryBK)" outline="true">
+                    <ion-label class="prod-categoria">{{prod.category.idCategoryBK}}</ion-label>
+                  </ion-chip>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-chip [color]="getColorStock(prod.stock)">
+                    <label >STOCK</label>
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      
+    </ion-row>
   </ion-grid>
-</form>
+</ion-grid>
+
+<!-- Modal para calificar -->
+<ion-modal [isOpen]="isModalUnoOpen">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Calificar {{ activeProd[1] }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setModalUnoOpen(false)">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <form [formGroup]="formCalif">
+        <ion-list>
+          <ion-item>
+            <ion-input type="text" placeholder="Nombre (opcional)" formControlName="name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="text" placeholder="Comentario (opcional)" formControlName="coment"></ion-input>
+          </ion-item>
+          <ion-item>
+           <ion-input type="number" placeholder="Calificación (0-5)" formControlName="calification"></ion-input>
+           <ng-container *ngFor="let val of validationMessages['calification']">
+            <div class="error-message" *ngIf="formCalif.get('calification')?.hasError(val.type)&&formCalif.get('calification')?.touched">
+              {{val.message}}
+            </div>
+          </ng-container>
+          </ion-item>
+          <ion-item>
+            <ion-button (click)="addCalif()" color="success" expand="full" [disabled]="!formCalif.valid">
+              Enviar Calificación
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="isModalDosOpen">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Opiniones de {{ activeProd[1] }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setModalDosOpen(false)">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+     <ion-list *ngFor="let coment of opiniones" class="listComent">
+        <ion-item>
+          <h4 slot="start">{{coment.name}}</h4>
+          <ion-rating-stars slot="end"
+              [rating]="coment.calification"
+              [color]="'darkgrey'"
+              [filledColor]="'orange'"
+              [margin]="2"
+              [size]="15"
+              [disabled]="true"
+            ></ion-rating-stars>
+        </ion-item>
+        <ion-item class="comentario">
+          <p>"{{coment.coment}}"</p>
+        </ion-item>
+        <ion-item class="fecha">
+          <p slot="end">Enviado el: {{coment.fecha.getDate().toString().padStart(2, '0')}}/{{(coment.fecha.getMonth() + 1).toString().padStart(2, '0')}}/{{coment.fecha.getFullYear().toString()}}</p>
+        </ion-item>
+      </ion-list>
+      <ion-infinite-scroll>
+        <ion-infinite-scroll-content loadingText="Please wait..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
 </ion-content>

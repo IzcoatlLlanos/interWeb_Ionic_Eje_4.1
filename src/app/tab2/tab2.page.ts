@@ -1,8 +1,20 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';//Import para trabajar con forms
-import { Student } from '../models/student';
-import { StudentService } from '../services/student.service';
-import { ToastController } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { Component, inject, ViewChild } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validator, FormBuilder } from '@angular/forms';
+import { ExploreContainerComponent } from '../explore-container/explore-container.component';
+import { Producto } from '../models/producto';
+import { Category } from '../models/category';
+import { Calification } from '../models/calification';
+import { ProductoService } from '../services/producto.service';
+import { CategoryService } from '../services/category.service';
+import { InfiniteScrollCustomEvent } from '@ionic/angular';
+
+
+import { IonRatingStarsModule } from 'ion-rating-stars';
+
+import {AlertController,IonSearchbar,IonSelect,ModalController,ToastController,} from '@ionic/angular';
 
 @Component({
   selector: 'app-tab2',
@@ -10,88 +22,116 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
+  @ViewChild('ionBusqueda') busqueda!: IonSearchbar;
 
-  public student: Student;
-  public myForm: FormGroup; 
-  public validationMessages;
+  isModalUnoOpen: boolean = false;
+  isModalDosOpen: boolean = false;
+  productos: Producto[] = [];
+  fProductos: Producto[] = [];
+  categorias: Category[] = [];
+  opiniones: Calification[] = [];
+  formCalif: FormGroup=this.fb.group({});
+  validationMessages;
+  activeProd: string[]=[];
 
-  public students: Student[];
-
-  constructor(private studentService: StudentService, private fb: FormBuilder,private toastController: ToastController){ /**Siempre se */
-  this.students = this.studentService.getStudentList();
-    this.myForm = this.fb.group({
-      controlNumber: ["",Validators.compose([Validators.minLength(8), //Compose sirve para meter varias validaciones a un input, recibe un arreglo
-        Validators.pattern('^[0-9]+$')])], // pattern recibe una expresion regular
-      name: ["",Validators.required],
-      curp: ["",Validators.compose([Validators.required, //Compose sirve para meter varias validaciones a un input, recibe un arreglo
-        Validators.pattern('^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$')])],
-      age: ["",Validators.compose([Validators.required, Validators.min(17)])],
-      nip: ["",Validators.compose([Validators.required, Validators.min(10)])],
-      email: ["",Validators.compose([Validators.required, Validators.email])],
-      carreer: ["",Validators.required],       
-      photo: [""]
-    });
-
-    this.student = {
-      name:"",
-      controlNumber:"",
-      age:0,
-      nip:0,
-      email:"",
-      career:"",
-      curp:"",
-      photo:""
-    }
-
-    this.validationMessages = {
-      'controlNumber':[
-        {type: 'required', message: "El numero de control es obligatorio"},
-        {type: 'minlength', message: "El numero de control esta incompleto"},
-        {type: 'pattern', message: "El numero de control no es valido"},
-      ],
-      'name':[
-        {type: 'required', message: "El nombre es obligatorio"},
-      ],
-      'curp':[
-        {type: 'required', message: "La curp es obligatoria"},
-        {type: 'pattern', message: "La curp no es valida"},
-      ],
-      'age':[
-        {type: 'required', message: "La edad obligatoria"},
-        {type: 'min', message: "La edad no es valida"},
-      ],
-      'nip':[
-        {type: 'required', message: "El nip es obligatorio"},
-        {type: 'min', message: "El nip debe tener al menos dos digitos"},
-      ],
-      'email':[
-        {type: 'required', message: "El correo electronico es obligatorio"},
-        {type: 'email', message: "El formato no es correcto para email"},
-      ],
-      'career':[
-        {type: 'required', message: "La carrera es obligatoria"},
-      ]
-    }
-  }
-
-  ngOnInit(){}
-
-  public newStudent() {  
-    this.studentService.newStudent(this.myForm.getRawValue());
-    this.presentToast('Estudiante añadido','success');
-  }
-
-  private async presentToast(
-    message: string,
-    color: 'success' | 'danger' | 'warning'
+  constructor(
+    private prodServ: ProductoService,
+    private cateServ: CategoryService,
+    private alertController: AlertController,
+    private toastController: ToastController,
+    private modalController: ModalController,
+    private fb: FormBuilder
   ) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 500,
-      color,
+      this.categorias = this.cateServ.getCatego();
+      this.productos = this.prodServ.getProductos();
+      this.fProductos = this.productos;
+      this.limpiarFormulario();
+
+      this.validationMessages = {
+        'calification':[
+          {type: 'required', message: 'Calificación requerida!'},
+          {type: 'min', message: 'El minimo es cero!'},
+          {type: 'max', message: 'El maximo es cinco!'}
+        ]
+      };
+      
+  }
+  limpiarFormulario() {
+    this.formCalif = this.fb.group({
+      name: [""],
+      coment: [""],
+      calification: ["",Validators.compose([Validators.required,Validators.min(0),Validators.max(5)])], 
+      fecha: [new Date()]
     });
-    toast.present();
+  }
+  getColor(type: string): string {
+    switch (type) {
+      case 'Atrapa Sueños':
+        return 'danger';
+      case 'Mandala':
+        return 'success';
+      case 'Ojos de Dios':
+        return 'warning';
+      default:
+        return 'primary';
+    }
+  }
+
+  getColorStock(stock: number): string {
+    if(stock>0) return 'success';
+    else return 'danger';
+  }
+
+  public filter (dato: String) {
+    if (!dato.trim()) {
+      this.fProductos = this.productos;
+      return;
+    }
+    this.fProductos = this.productos.filter((prod) =>
+      prod.name.toLowerCase().includes(dato.toLowerCase())
+    );
+  }
+
+  public filterProduct(event: Event) {
+    if (event instanceof CustomEvent) {
+      this.filter(event.detail.value);
+    }
+  }
+
+  setModalUnoOpen(isOpen: boolean) {
+    this.isModalUnoOpen = isOpen;
+    if (!this.isModalUnoOpen) {
+      this.activeProd[0] = "";
+      this.activeProd[1] = "";
+    } 
+  }
+
+  setModalDosOpen(isOpen: boolean) {
+    this.isModalDosOpen = isOpen;
+    if (!this.isModalUnoOpen) {
+      this.activeProd[0] = "";
+      this.activeProd[1] = "";
+      this.opiniones = [];
+    }
+  }
+
+  setActiveProd(prod: Producto) {
+    this.activeProd[0] = prod.sku;
+    this.activeProd[1] = prod.name;
+    this.opiniones = prod.calification;
+  }
+
+  addCalif() {
+    const pos = this.productos.findIndex( p => p.sku == this.activeProd[0]);
+    /*let calif = this.formCalif.getRawValue();
+    if(calif.name == '') calif.name='Anonimo';
+    if(calif.coment == '') calif.coment='La persona no dejó comentario';*/
+    this.productos[pos].calification.push(this.formCalif.getRawValue());
+    const _prod = this.productos[pos];
+    this.prodServ.uploadProduct(_prod);
+    this.setModalUnoOpen(false);
+    this.limpiarFormulario();
+    
   }
 
 }
-//LAGH991023HNTLDC99
