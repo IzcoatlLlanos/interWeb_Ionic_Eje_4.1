@@ -66,11 +66,11 @@ export class Tab2Page {
   }
   getColor(type: string): string {
     switch (type) {
-      case 'Atrapa Sueños':
+      case 'Rellenas':
         return 'danger';
-      case 'Mandala':
+      case 'Frutos Secos':
         return 'success';
-      case 'Ojos de Dios':
+      case 'Semillas':
         return 'warning';
       default:
         return 'primary';

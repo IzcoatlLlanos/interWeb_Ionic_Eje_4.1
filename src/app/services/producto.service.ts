@@ -19,51 +19,61 @@ export class ProductoService {
     this.cat = cate.getCatego();
     this.productos.push({
       sku: '1',
-      name: 'Ojo de Dios Shaquira CH',
-      description: 'Ojo de Dios hecho con shaquiras de colores de tamaño chico',
-      price: 1200,
-      category: this.cat[2],
+      name: 'Galletas de cajeta',
+      description: 'Paquete ded deliciosas galletas rellenas de cajeta organica traida de Talpa de Allende.',
+      price: 18.50,
+      category: this.cat[0],
       calification: [{   
         name: 'Pedro Rivera',
-        coment: 'Pesimo producto',
-        calification: 2,
+        coment: 'Muy ricas las galletas',
+        calification: 4,
+        fecha: new Date()
+      },{   
+        name: 'Jorge Victor Vera Gaytan',
+        coment: 'Muy ricas las galletas, sepa quien las hará',
+        calification: 5,
         fecha: new Date()
       }],
       //discant:
       stock: 10,
-      photo: 'https://picsum.photos/id/2/200/300',
+      photo: 'https://i.pinimg.com/originals/cd/69/d5/cd69d59f6475fe623ecbb89d662c06ee.png',
       promCal: 2
     },{
       sku: '2',
-      name: 'Mandala Spiderman XL',
-      description: 'Mandala con diseño del fantastico hombre araña, hecho con siete hilos de la mejor calidad, tamaño extra grande',
+      name: 'Galletas de girasol',
+      description: 'Paquete de deliciosas galletas con semillas de girasol organicas del estado de México.',
       price: 2500,
-      category: this.cat[1],
+      category: this.cat[2],
       calification: [{  
         name: 'Carmen Valencia',
-        coment: 'Mediana calidad de producto',
-        calification: 3,
+        coment: 'Excelente calidad de producto',
+        calification: 5,
         fecha: new Date()
       }],
       stock: 3,
-      photo: 'https://picsum.photos/id/3/200/300',
+      photo: 'https://assets.unileversolutions.com/recipes-v2/38531.jpg',
       promCal: 3
     },{
       sku: '3',
-      name: 'Atrapa sueños Trailero',
-      description: 'Atrapa sueños con diseño colorido, resalta sus hermosos colores bajo los influjos de sustancias psicoactivas.',
+      name: 'Galletas de arandano',
+      description: 'Paquete de deliciosas galletas con los mejores arandanos de la republica.',
       price: 999,
-      category: this.cat[0],
-      calification: [],
+      category: this.cat[1],
+      calification: [{  
+        name: 'Hector Izcoatl Llanos Godoy',
+        coment: 'Me agradó bastante el sabor de los arandanos y tambien la rica harina de la galleta',
+        calification: 5,
+        fecha: new Date()
+      }],
       stock: 18,
-      photo: 'https://picsum.photos/id/4/200/300',
+      photo: 'https://vainillamolina.com/uploads/images/289x263-galletas-arandano.jpg',
       promCal: 0
     },{
       sku: '4',
-      name: 'Atrapa sueños Trailero',
-      description: 'Atrapa sueños con diseño colorido, resalta sus hermosos colores bajo los influjos de sustancias psicoactivas.',
+      name: 'Galletas Mixtas',
+      description: 'Paquete de deliciosas galletas de arandanos, semillas de girasol y rellenas de cajeta.',
       price: 999,
-      category: this.cat[0],
+      category: this.cat[3],
       calification: [{     
         name: 'Raul Perez',
         coment: 'Excelente producto',
@@ -86,7 +96,7 @@ export class ProductoService {
         fecha: new Date()
       }],
       stock: 18,
-      photo: 'https://picsum.photos/id/12/200/300',
+      photo: 'https://bonaroma.com.mx/cdn/shop/products/galletas-caja-de-galletas-mixtas-01.jpg?v=1643150979',
       promCal: 5
     });
   }

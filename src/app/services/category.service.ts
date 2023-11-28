@@ -10,13 +10,16 @@ export class CategoryService {
   constructor() {
     this.cat.push({
       idCategoryOK: '1',
-      idCategoryBK: 'Atrapa Sueños'
+      idCategoryBK: 'Rellenas'
     },{
       idCategoryOK: '2',
-      idCategoryBK: 'Mandala'
+      idCategoryBK: 'Frutos Secos'
     },{
       idCategoryOK: '3',
-      idCategoryBK: 'Ojos de Dios'
+      idCategoryBK: 'Semillas'
+    },{
+      idCategoryOK: '4',
+      idCategoryBK: 'Mixtas'
     });
   }
 
