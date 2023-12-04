@@ -19,9 +19,9 @@ export class ProductoService {
     this.cat = cate.getCatego();
     this.productos.push({
       sku: '1',
-      name: 'Galletas de cajeta',
-      description: 'Paquete ded deliciosas galletas rellenas de cajeta organica traida de Talpa de Allende.',
-      price: 18.50,
+      name: 'Galletas Rellenas',
+      description: 'Paquete ded deliciosas galletas rellenas de mermelada de fresa.',
+      price: 40,
       category: this.cat[0],
       calification: [{   
         name: 'Pedro Rivera',
@@ -40,9 +40,9 @@ export class ProductoService {
       promCal: 2
     },{
       sku: '2',
-      name: 'Galletas de girasol',
-      description: 'Paquete de deliciosas galletas con semillas de girasol organicas del estado de México.',
-      price: 2500,
+      name: 'Galletas de Semillas',
+      description: 'Paquete de deliciosas galletas con semillas; almendra, nuez o chía.',
+      price: 45,
       category: this.cat[2],
       calification: [{  
         name: 'Carmen Valencia',
@@ -55,9 +55,9 @@ export class ProductoService {
       promCal: 3
     },{
       sku: '3',
-      name: 'Galletas de arandano',
-      description: 'Paquete de deliciosas galletas con los mejores arandanos de la republica.',
-      price: 999,
+      name: 'Galletas de Frutos Secos',
+      description: 'Paquete de deliciosas galletas con la mejor calidad de: arandanos, ciruelas y pasas.',
+      price: 45,
       category: this.cat[1],
       calification: [{  
         name: 'Hector Izcoatl Llanos Godoy',
@@ -70,9 +70,9 @@ export class ProductoService {
       promCal: 0
     },{
       sku: '4',
-      name: 'Galletas Mixtas',
-      description: 'Paquete de deliciosas galletas de arandanos, semillas de girasol y rellenas de cajeta.',
-      price: 999,
+      name: 'Galletas de zarzamora',
+      description: 'Paquete de galletas de zarzamora.',
+      price: 45,
       category: this.cat[3],
       calification: [{     
         name: 'Raul Perez',
@@ -96,7 +96,7 @@ export class ProductoService {
         fecha: new Date()
       }],
       stock: 18,
-      photo: 'https://bonaroma.com.mx/cdn/shop/products/galletas-caja-de-galletas-mixtas-01.jpg?v=1643150979',
+      photo: 'https://i.pinimg.com/originals/cd/69/d5/cd69d59f6475fe623ecbb89d662c06ee.png',
       promCal: 5
     });
   }

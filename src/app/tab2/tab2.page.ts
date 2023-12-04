@@ -10,6 +10,8 @@ import { Calification } from '../models/calification';
 import { ProductoService } from '../services/producto.service';
 import { CategoryService } from '../services/category.service';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import { Carrito } from '../models/carrito';
+import { CarritoService } from '../services/carrito.service';
 
 
 import { IonRatingStarsModule } from 'ion-rating-stars';
@@ -26,17 +28,21 @@ export class Tab2Page {
 
   isModalUnoOpen: boolean = false;
   isModalDosOpen: boolean = false;
+  isCarritoMamalon: boolean = false;
   productos: Producto[] = [];
   fProductos: Producto[] = [];
   categorias: Category[] = [];
+  carritoMamalon: Carrito[] = [];
   opiniones: Calification[] = [];
   formCalif: FormGroup=this.fb.group({});
   validationMessages;
   activeProd: string[]=[];
+  totalCarrito: number = 0; 
 
   constructor(
     private prodServ: ProductoService,
     private cateServ: CategoryService,
+    private carrito: CarritoService,
     private alertController: AlertController,
     private toastController: ToastController,
     private modalController: ModalController,
@@ -44,6 +50,7 @@ export class Tab2Page {
   ) {
       this.categorias = this.cateServ.getCatego();
       this.productos = this.prodServ.getProductos();
+      this.carritoMamalon = this.carrito.getCarrito();
       this.fProductos = this.productos;
       this.limpiarFormulario();
 
@@ -82,6 +89,10 @@ export class Tab2Page {
     else return 'danger';
   }
 
+  calcularTotalCarrito() {
+    this.totalCarrito = this.carritoMamalon[0].productos.reduce((acumulador, producto) => acumulador + producto.price, 0);
+  }
+
   public filter (dato: String) {
     if (!dato.trim()) {
       this.fProductos = this.productos;
@@ -105,6 +116,12 @@ export class Tab2Page {
       this.activeProd[1] = "";
     } 
   }
+  
+  setCarritoToMamalon(isOpen: boolean) {
+    this.calcularTotalCarrito();
+    this.isCarritoMamalon = isOpen;
+  }
+
 
   setModalDosOpen(isOpen: boolean) {
     this.isModalDosOpen = isOpen;
@@ -113,6 +130,14 @@ export class Tab2Page {
       this.activeProd[1] = "";
       this.opiniones = [];
     }
+  }
+
+  sacarAlvDelCarritoMamalon(i: number) {
+
+  }
+
+  echaloAlCarritoMamalon(productoPrron: Producto){
+    this.carritoMamalon[0].productos.push(productoPrron)
   }
 
   setActiveProd(prod: Producto) {
@@ -131,7 +156,6 @@ export class Tab2Page {
     this.prodServ.uploadProduct(_prod);
     this.setModalUnoOpen(false);
     this.limpiarFormulario();
-    
   }
 
 }
